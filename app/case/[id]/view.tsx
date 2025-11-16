@@ -80,44 +80,46 @@ export default function CaseDetails({ id }: { id: string }) {
   if (!data || (data as any).error) return <p>Error: {(data as any).error || 'Unknown'}</p>;
 
   return (
-    <div>
+    <div className="stack">
       <h1>Case {data.type} / {data.receipt}</h1>
-      <p>Member: {data.member.name} (ID {data.member.id})</p>
+      <p className="muted">Member: {data.member.name} (ID {data.member.id})</p>
       <p><Link href="/" target="_self">Back to list</Link></p>
       <h2>Responses</h2>
-  {data.responses.length === 0 && <p>No stored responses yet.</p>}
-      {data.responses.map((r, idx) => {
-        const prevSameEndpoint = data.responses.slice(idx + 1).find(pr => pr.endpoint === r.endpoint);
-        const diffs = prevSameEndpoint ? computeDiff(prevSameEndpoint.json, r.json) : [];
-        return (
-          <div key={r.id} style={{ border: '1px solid #ddd', padding: 8, marginBottom: 12 }}>
-            <strong>{r.endpoint}</strong>{' '}
-            <small>{new Date(r.fetchedAt).toLocaleString()}</small>
-            {prevSameEndpoint && (
-              <div style={{ marginTop: 4, fontSize: 12 }}>
-                {diffs.length === 0 ? (
-                  <span style={{ color: 'gray' }}>No changes vs previous version.</span>
-                ) : (
-                  <details>
-                    <summary style={{ cursor: 'pointer' }}>{diffs.length} change{diffs.length>1?'s':''} vs previous.</summary>
-                    <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
-                      {diffs.map(d => (
-                        <li key={d.path} style={{ marginBottom: 4 }}>
-                          <code>{d.path}</code>: <span style={{ color: '#b00' }}>{JSON.stringify(d.before)}</span> → <span style={{ color: '#080' }}>{JSON.stringify(d.after)}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
-                )}
-              </div>
-            )}
-            <details style={{ marginTop: 6 }}>
-              <summary>JSON ({r.hash.slice(0,8)}...)</summary>
-              <PrettyJson value={r.json} />
-            </details>
-          </div>
-        );
-      })}
+      {data.responses.length === 0 && <p>No stored responses yet.</p>}
+      <div className="responses">
+        {data.responses.map((r, idx) => {
+          const prevSameEndpoint = data.responses.slice(idx + 1).find(pr => pr.endpoint === r.endpoint);
+          const diffs = prevSameEndpoint ? computeDiff(prevSameEndpoint.json, r.json) : [];
+          return (
+            <div key={r.id} className="response-card">
+              <strong>{r.endpoint}</strong>{' '}
+              <small>{new Date(r.fetchedAt).toLocaleString()}</small>
+              {prevSameEndpoint && (
+                <div style={{ marginTop: 4, fontSize: 12 }}>
+                  {diffs.length === 0 ? (
+                    <span className="status-gray">No changes vs previous version.</span>
+                  ) : (
+                    <details>
+                      <summary style={{ cursor: 'pointer' }}>{diffs.length} change{diffs.length>1?'s':''} vs previous.</summary>
+                      <ul className="diff-list">
+                        {diffs.map(d => (
+                          <li key={d.path}>
+                            <code>{d.path}</code>: <span style={{ color: '#b00' }}>{JSON.stringify(d.before)}</span> → <span style={{ color: '#080' }}>{JSON.stringify(d.after)}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  )}
+                </div>
+              )}
+              <details style={{ marginTop: 6 }}>
+                <summary>JSON ({r.hash.slice(0,8)}...)</summary>
+                <PrettyJson value={r.json} />
+              </details>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
