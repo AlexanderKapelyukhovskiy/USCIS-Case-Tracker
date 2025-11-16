@@ -1,5 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
+import Header from '../../components/Header';
 import Link from 'next/link';
 
 interface CaseResponseItem {
@@ -79,9 +81,11 @@ export default function CaseDetails({ id }: { id: string }) {
   if (loading) return <p>Loading details...</p>;
   if (!data || (data as any).error) return <p>Error: {(data as any).error || 'Unknown'}</p>;
 
+  const { status } = useSession();
+
   return (
     <div className="stack">
-      <h1>Case {data.type} / {data.receipt}</h1>
+      <Header title={`Case ${data.type} / ${data.receipt}`} />
       <p className="muted">Member: {data.member.name} (ID {data.member.id})</p>
       <p><Link href="/" target="_self">Back to list</Link></p>
       <h2>Responses</h2>

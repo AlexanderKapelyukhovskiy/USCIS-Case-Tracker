@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSession, signIn } from 'next-auth/react';
+import Header from './components/Header';
 
 type CaseType = 'AP' | 'EAD' | 'I485' | 'I485J';
 
@@ -87,7 +88,7 @@ export default function RootV2() {
 
   return (
     <main className="page stack">
-      <h1>USCIS Tracking</h1>
+      <Header title="USCIS Tracking" />
       <section className="stack">
         <h2>Members</h2>
         <div className="members">
@@ -129,7 +130,7 @@ export default function RootV2() {
             <button style={{ flexBasis: '120px' }} className="primary" onClick={addCase}>Add Case</button>
           </div>
           <div className="stack">
-            <label className="muted">Cookie header (stored per member)</label>
+            <label className="muted">Cookie header</label>
             <textarea style={{ minHeight: 130 }} value={currentCookie()} onChange={e=>updateCookie(e.target.value)} />
             <button className="primary" disabled={loading} onClick={sync}>{loading? 'Syncing...':'Sync Cases'}</button>
           </div>
