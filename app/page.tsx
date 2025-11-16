@@ -65,19 +65,28 @@ export default function RootV2() {
   if (status !== 'authenticated') {
     return (
       <main className="page stack" style={{ maxWidth: 780 }}>
-        <h1>USCIS Case Change Tracker</h1>
+        <h1>USCIS Case Tracking Helper</h1>
         <p>
-          Track USCIS case JSON responses (summary, receipt info, status) over time for multiple members/applicants.
-          Sync fetches live data from <code>my.uscis.gov</code>, stores only changed responses (via SHA-256 hash), and shows change indicators.
+          If you regularly check your immigration case status on the USCIS website, this tool makes that process easier.
+          USCIS provides more detailed information behind the scenes via its JSON data. We surface and preserve those
+          details for you automatically so you can see what changed—not just the latest status line.
+        </p>
+        <p>
+          Sign in to:
         </p>
         <ul className="stack" style={{ paddingLeft: '1.1rem' }}>
-          <li><strong>Members:</strong> Create logical people scoped to your login.</li>
-          <li><strong>Cases:</strong> Add receipt + type (AP, EAD, I485, I485J).</li>
-          <li><strong>Sync:</strong> Paste your authenticated USCIS <code>Cookie</code> per member; only changed JSON is saved.</li>
-          <li><strong>History & Diff:</strong> Detail page shows all versions & field‑level differences.</li>
-          <li><strong>Privacy:</strong> Data isolated to your Google account.</li>
+          <li><strong>Organize cases</strong> for yourself or family members in one place.</li>
+          <li><strong>Save history</strong> of detailed case responses so you can compare versions.</li>
+          <li><strong>Spot changes fast</strong> with clear indicators showing what updated between syncs.</li>
+          <li><strong>Drill into details</strong> beyond the basic status, including structured fields from the USCIS data.</li>
+          <li><strong>Keep control</strong> – your data is scoped to your Google sign‑in, and session cookies you paste are only stored in your browser memory.</li>
         </ul>
-        <p className="muted">No data fetched until you sign in. Cookies stay only in local component state.</p>
+        <p>
+          This site doesn’t replace the official USCIS portal; it simply helps you monitor and understand the
+          information the portal already exposes. Source code is open and available at{' '}
+          <a href="https://github.com/AlexanderKapelyukhovskiy/USCIS-Case-Tracker" target="_blank" rel="noopener noreferrer">GitHub</a>.
+        </p>
+        <p className="muted">Nothing is fetched until you sign in.</p>
         <button className="primary" onClick={() => signIn('google')}>Sign in with Google</button>
       </main>
     );
