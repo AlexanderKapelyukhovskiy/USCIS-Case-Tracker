@@ -1,4 +1,4 @@
-## USCIS Tracking (V2)
+## USCIS Case Tracker 
 
 Database‑backed Next.js application for tracking USCIS case JSON responses per member & receipt.
 
