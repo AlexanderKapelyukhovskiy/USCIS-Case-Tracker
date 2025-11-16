@@ -1,0 +1,50 @@
+// Prisma schema for USCIS tracking v2
+// DATABASE_URL must be set in .env.local
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Member {
+  id        Int      @id @default(autoincrement())
+  name      String
+  userId    String   // identifies owner (e.g. session user email)
+  createdAt DateTime @default(now())
+  cases     Case[]
+  @@index([userId])
+  @@unique([userId, name])
+}
+
+enum CaseType {
+  AP
+  EAD
+  I485
+  I485J
+}
+
+model Case {
+  id         Int       @id @default(autoincrement())
+  receipt    String
+  type       CaseType
+  member     Member    @relation(fields: [memberId], references: [id])
+  memberId   Int
+  responses  CaseResponse[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  @@unique([memberId, receipt])
+}
+
+model CaseResponse {
+  id         Int      @id @default(autoincrement())
+  case       Case     @relation(fields: [caseId], references: [id])
+  caseId     Int
+  endpoint   String   // api-cases | receipt_info | case_status
+  hash       String   // sha256 of content
+  json       Json
+  fetchedAt  DateTime @default(now())
+}
