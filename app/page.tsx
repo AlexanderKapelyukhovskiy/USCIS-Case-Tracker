@@ -138,7 +138,7 @@ export default function RootV2() {
       )}
       {shownSyncResult && (
         <section className="stack">
-          <h2>Last Sync Result (member #{selected})</h2>
+          <h2>Last Sync Result</h2>
           {shownSyncResult.results.map((r:any)=> (
             <div key={r.receipt} className="sync-item">
               <strong>{r.type} / {r.receipt}</strong>
